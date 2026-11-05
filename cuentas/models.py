@@ -2,6 +2,8 @@
 from django.conf import settings
 from django.db import models
 
+from .validators import validar_rut
+
 
 class Perfil(models.Model):
     class Rol(models.TextChoices):
@@ -10,7 +12,7 @@ class Perfil(models.Model):
         PRODUCTOR = 'productor', 'Productor'
 
     usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='perfil')
-    rut = models.CharField(max_length=12, unique=True)  # TODO P2: validar RUT (módulo 11)
+    rut = models.CharField(max_length=12, unique=True, validators=[validar_rut])
     telefono = models.CharField(max_length=15, blank=True)
     rol_institucional = models.CharField(max_length=12, choices=Rol.choices, default=Rol.CLIENTE)
 
