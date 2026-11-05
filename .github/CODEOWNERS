@@ -1,0 +1,6 @@
+# Reemplaza los usuarios por las cuentas reales de GitHub antes de activar la protección de rama.
+/catalogo/   @USUARIO_GITHUB_CRISTIAN
+/reservas/   @USUARIO_GITHUB_CRISTIAN
+/cuentas/    @USUARIO_GITHUB_PABLO
+/portal/     @USUARIO_GITHUB_PABLO
+/templates/  @USUARIO_GITHUB_PABLO

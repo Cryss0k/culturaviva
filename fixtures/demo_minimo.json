@@ -1,0 +1,24 @@
+[
+  {"model": "catalogo.genero", "pk": 1, "fields": {
+    "nombre": "Teatro", "slug": "teatro", "descripcion": "Obras de teatro y artes escénicas.", "icono": "bi-masks", "activo": true}},
+  {"model": "catalogo.genero", "pk": 2, "fields": {
+    "nombre": "Música", "slug": "musica", "descripcion": "Conciertos y recitales en vivo.", "icono": "bi-music-note-beamed", "activo": true}},
+  {"model": "catalogo.espectaculo", "pk": 1, "fields": {
+    "genero": 1, "codigo": "TEA-001", "slug": "la-casa-de-bernarda-alba", "titulo": "La casa de Bernarda Alba",
+    "descripcion": "Montaje contemporáneo del clásico de García Lorca.", "elenco": "Compañía Teatro del Sur",
+    "sala": "Sala Principal", "fecha_funcion": "2027-03-20T20:00:00-03:00", "duracion_minutos": 110,
+    "aforo": 200, "entradas_disponibles": 150, "precio_entrada": "12000", "estado": "disponible",
+    "activo": true, "creado": "2026-11-01T10:00:00-03:00", "actualizado": "2026-11-01T10:00:00-03:00"}},
+  {"model": "catalogo.espectaculo", "pk": 2, "fields": {
+    "genero": 1, "codigo": "TEA-002", "slug": "comedia-en-un-acto", "titulo": "Comedia en un acto",
+    "descripcion": "Una comedia ligera para toda la familia.", "elenco": "Grupo Escena Viva",
+    "sala": "Sala Experimental", "fecha_funcion": "2027-03-27T19:00:00-03:00", "duracion_minutos": 75,
+    "aforo": 80, "entradas_disponibles": 0, "precio_entrada": "8000", "estado": "agotado",
+    "activo": true, "creado": "2026-11-01T10:00:00-03:00", "actualizado": "2026-11-01T10:00:00-03:00"}},
+  {"model": "catalogo.espectaculo", "pk": 3, "fields": {
+    "genero": 2, "codigo": "MUS-001", "slug": "noche-de-jazz-austral", "titulo": "Noche de jazz austral",
+    "descripcion": "Cuarteto de jazz con repertorio de autores sureños.", "elenco": "Cuarteto Austral",
+    "sala": "Sala Principal", "fecha_funcion": "2027-04-10T21:00:00-03:00", "duracion_minutos": 120,
+    "aforo": 250, "entradas_disponibles": 200, "precio_entrada": "15000", "estado": "disponible",
+    "activo": true, "creado": "2026-11-01T10:00:00-03:00", "actualizado": "2026-11-01T10:00:00-03:00"}}
+]

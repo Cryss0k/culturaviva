@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Inicio · CulturaViva{% endblock %}
+{% block content %}
+  <div class="p-5 mb-4 bg-light rounded-3">
+    <h1 class="display-5 fw-bold">CulturaViva Producciones</h1>
+    <p class="fs-5">Teatro, música, danza y más. Compra tus entradas en línea.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'portal:lista' %}">Ver espectáculos</a>
+  </div>
+  <p class="text-muted">Base del proyecto lista. Pablo reemplaza esta portada (tarea P1/P5).</p>
+{% endblock %}

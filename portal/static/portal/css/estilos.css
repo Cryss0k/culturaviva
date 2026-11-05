@@ -1,0 +1,9 @@
+/* Estilos propios del proyecto. Prefijo "cv-" en todas las clases. */
+.cv-card-espectaculo img {
+  object-fit: cover;
+  height: 200px;
+}
+.cv-card-espectaculo:hover {
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+  transition: box-shadow .2s ease-in-out;
+}

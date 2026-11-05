@@ -1,0 +1,21 @@
+# Entorno y secretos
+.venv/
+venv/
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Base de datos y archivos subidos
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Editores y sistema
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
