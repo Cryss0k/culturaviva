@@ -1,14 +1,11 @@
-"""Vistas de autenticación (Pablo: tareas P2, P3). Login, logout y perfil siguen como stubs."""
+"""Vistas de autenticación (Pablo: tareas P2, P3)."""
 from django.contrib import messages
 from django.contrib.auth import login
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect, render
 
-from .forms import RegistroForm
-
-
-def _stub(nombre):
-    return HttpResponse(f'Pendiente de implementar: {nombre} (Pablo)')
+from .forms import LoginForm, PerfilForm, RegistroForm
 
 
 def registro(request):
@@ -27,13 +24,37 @@ def registro(request):
     return render(request, 'cuentas/registro.html', {'form': form})
 
 
-def login_vista(request):
-    return _stub('cuentas:login')
+class LoginVista(LoginView):
+    """Login con AuthenticationForm y mensaje de bienvenida."""
+
+    def form_valid(self, form):
+        messages.success(self.request, f'Hola de nuevo, {form.get_user().username}.')
+        return super().form_valid(form)
 
 
-def logout_vista(request):
-    return _stub('cuentas:logout (POST)')
+login_vista = LoginVista.as_view(
+    template_name='cuentas/login.html',
+    authentication_form=LoginForm,
+    redirect_authenticated_user=True,
+)
+
+# Django 5: LogoutView solo acepta POST (el navbar ya lo envía así).
+logout_vista = LogoutView.as_view()
 
 
+@login_required
 def perfil(request):
-    return _stub('cuentas:perfil (login_required)')
+    """Muestra los datos del usuario y permite editar el teléfono."""
+    perfil_usuario = getattr(request.user, 'perfil', None)
+    if perfil_usuario is None:  # p. ej. superusuario creado con createsuperuser
+        messages.info(request, 'Tu cuenta no tiene un perfil asociado.')
+        return redirect('portal:inicio')
+    if request.method == 'POST':
+        form = PerfilForm(request.POST, instance=perfil_usuario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tu perfil fue actualizado.')
+            return redirect('cuentas:perfil')
+    else:
+        form = PerfilForm(instance=perfil_usuario)
+    return render(request, 'cuentas/perfil.html', {'form': form, 'perfil': perfil_usuario})

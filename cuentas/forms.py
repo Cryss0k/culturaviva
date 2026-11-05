@@ -1,6 +1,6 @@
-"""Formularios de autenticación (Pablo: tarea P2)."""
+"""Formularios de autenticación y perfil (Pablo: tareas P2 y P3)."""
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.db import transaction
 
@@ -22,6 +22,10 @@ class BootstrapFormMixin:
             else:
                 clase = 'form-control'
             widget.attrs['class'] = f"{widget.attrs.get('class', '')} {clase}".strip()
+
+
+class LoginForm(BootstrapFormMixin, AuthenticationForm):
+    """Login con estilos de Bootstrap."""
 
 
 class RegistroForm(BootstrapFormMixin, UserCreationForm):
@@ -60,3 +64,10 @@ class RegistroForm(BootstrapFormMixin, UserCreationForm):
             )
         return user
 
+
+class PerfilForm(BootstrapFormMixin, forms.ModelForm):
+    """Permite editar solo el teléfono; el RUT y el rol no se modifican."""
+
+    class Meta:
+        model = Perfil
+        fields = ('telefono',)

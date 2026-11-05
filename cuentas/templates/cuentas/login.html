@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Ingresar · CulturaViva{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <h1 class="h3 mb-3">Ingresar</h1>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% include 'includes/campos_form.html' %}
+        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+      </form>
+      <p class="mt-3 small">¿No tienes cuenta? <a href="{% url 'cuentas:registro' %}">Regístrate</a>.</p>
+    </div>
+  </div>
+{% endblock %}
