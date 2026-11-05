@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}{{ espectaculo.titulo }} · CulturaViva{% endblock %}
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'portal:lista' %}">Espectáculos</a></li>
+      <li class="breadcrumb-item active">{{ espectaculo.titulo }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4">
+    <div class="col-md-5">
+      {% if espectaculo.imagen %}
+        <img src="{{ espectaculo.imagen.url }}" class="img-fluid rounded" alt="{{ espectaculo.titulo }}">
+      {% else %}
+        <div class="cv-sin-imagen rounded"><i class="bi bi-image"></i></div>
+      {% endif %}
+    </div>
+    <div class="col-md-7">
+      <span class="badge bg-secondary">{{ espectaculo.genero.nombre }}</span>
+      <span class="badge bg-{% if espectaculo.puede_reservar %}success{% else %}danger{% endif %}">{{ espectaculo.get_estado_display }}</span>
+      <h1 class="h2 mt-2">{{ espectaculo.titulo }}</h1>
+      <p>{{ espectaculo.descripcion|linebreaksbr }}</p>
+      <ul class="list-unstyled">
+        <li><i class="bi bi-people"></i> <strong>Elenco:</strong> {{ espectaculo.elenco }}</li>
+        <li><i class="bi bi-geo-alt"></i> <strong>Sala:</strong> {{ espectaculo.sala }}</li>
+        <li><i class="bi bi-calendar-event"></i> <strong>Función:</strong> {{ espectaculo.fecha_funcion|date:"d/m/Y H:i" }}</li>
+        <li><i class="bi bi-clock"></i> <strong>Duración:</strong> {{ espectaculo.duracion_minutos }} min</li>
+        <li><i class="bi bi-ticket"></i> <strong>Entradas disponibles:</strong> {{ espectaculo.entradas_disponibles }}</li>
+      </ul>
+      <p class="cv-precio">${{ espectaculo.precio_entrada|floatformat:0 }} <small class="text-muted fs-6">por entrada</small></p>
+
+      {% if espectaculo.puede_reservar %}
+        <form method="post" action="{% url 'reservas:agregar' espectaculo.id %}" class="row g-2 align-items-end">
+          {% csrf_token %}
+          <div class="col-auto">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" id="cantidad" name="cantidad" class="form-control" value="1"
+                   min="1" max="{{ cantidad_maxima }}">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-cart-plus"></i> Agregar al carrito</button>
+          </div>
+        </form>
+      {% else %}
+        <button class="btn btn-secondary" disabled>No disponible para la venta</button>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

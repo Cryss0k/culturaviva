@@ -2,7 +2,7 @@
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from catalogo.models import Espectaculo, Genero
 
@@ -60,7 +60,11 @@ def lista(request):
 
 
 def detalle(request, slug):
-    return _stub(f'portal:detalle ({slug})')
+    """Detalle por slug; 404 si no existe o está dado de baja."""
+    espectaculo = get_object_or_404(
+        Espectaculo.objects.vigentes().select_related('genero'), slug=slug)
+    return render(request, 'portal/detalle.html', {
+        'espectaculo': espectaculo, 'cantidad_maxima': 6})
 
 
 def gestion_lista(request):
