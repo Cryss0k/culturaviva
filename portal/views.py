@@ -1,10 +1,15 @@
 """Catálogo público y CRUD de gestión (Pablo: tareas P5 a P10). Lo pendiente sigue como stub."""
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from catalogo.models import Espectaculo, Genero
+from cuentas.permisos import exige_staff
+
+from .forms import EspectaculoForm
 
 POR_PAGINA = 9
 # Lista blanca: solo estos valores pueden llegar al order_by().
@@ -71,8 +76,19 @@ def gestion_lista(request):
     return _stub('portal:gestion_lista (staff)')
 
 
+@login_required
+@user_passes_test(exige_staff)
 def crear(request):
-    return _stub('portal:crear (staff)')
+    """C: crea un espectáculo (con imagen opcional en request.FILES)."""
+    if request.method == 'POST':
+        form = EspectaculoForm(request.POST, request.FILES)
+        if form.is_valid():
+            espectaculo = form.save()
+            messages.success(request, f'«{espectaculo.titulo}» fue creado.')
+            return redirect('portal:gestion_lista')
+    else:
+        form = EspectaculoForm()
+    return render(request, 'portal/form_espectaculo.html', {'form': form, 'titulo': 'Nuevo espectáculo'})
 
 
 def editar(request, slug):

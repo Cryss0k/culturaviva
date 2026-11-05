@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }} · CulturaViva{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="h3 mb-3">{{ titulo }}</h1>
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {% include 'includes/campos_form.html' %}
+        {% if espectaculo.imagen %}
+          <p class="small text-muted">Imagen actual: {{ espectaculo.imagen.name }}. Sube otra para reemplazarla.</p>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'portal:gestion_lista' %}" class="btn btn-outline-secondary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}
