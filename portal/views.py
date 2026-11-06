@@ -1,9 +1,8 @@
-"""Catálogo público y CRUD de gestión (Pablo: tareas P5 a P10). Lo pendiente sigue como stub."""
+"""Catálogo público y CRUD de gestión (Pablo: tareas P5 a P10)."""
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from catalogo.models import Espectaculo, Genero
@@ -21,10 +20,6 @@ ORDENES = {
     'titulo': 'Título (A-Z)',
     '-titulo': 'Título (Z-A)',
 }
-
-
-def _stub(nombre):
-    return HttpResponse(f'Pendiente de implementar: {nombre} (Pablo)')
 
 
 def inicio(request):
@@ -72,8 +67,12 @@ def detalle(request, slug):
         'espectaculo': espectaculo, 'cantidad_maxima': 6})
 
 
+@login_required
+@user_passes_test(exige_staff)
 def gestion_lista(request):
-    return _stub('portal:gestion_lista (staff)')
+    """Todos los espectáculos (activos e inactivos) para el personal."""
+    espectaculos = Espectaculo.objects.select_related('genero').order_by('-activo', 'fecha_funcion')
+    return render(request, 'portal/gestion_lista.html', {'espectaculos': espectaculos})
 
 
 @login_required
