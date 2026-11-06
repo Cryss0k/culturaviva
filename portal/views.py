@@ -91,12 +91,34 @@ def crear(request):
     return render(request, 'portal/form_espectaculo.html', {'form': form, 'titulo': 'Nuevo espectáculo'})
 
 
+@login_required
+@user_passes_test(exige_staff)
 def editar(request, slug):
-    return _stub(f'portal:editar ({slug}) (staff)')
+    """U: edita un espectáculo con el formulario precargado."""
+    espectaculo = get_object_or_404(Espectaculo, slug=slug)
+    if request.method == 'POST':
+        form = EspectaculoForm(request.POST, request.FILES, instance=espectaculo)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'«{espectaculo.titulo}» fue actualizado.')
+            return redirect('portal:gestion_lista')
+    else:
+        form = EspectaculoForm(instance=espectaculo)
+    return render(request, 'portal/form_espectaculo.html', {
+        'form': form, 'titulo': f'Editar: {espectaculo.titulo}', 'espectaculo': espectaculo})
 
 
+@login_required
+@user_passes_test(exige_staff)
 def eliminar(request, slug):
-    return _stub(f'portal:eliminar ({slug}) (staff)')
+    """D: confirmación previa y baja lógica (activo=False). No borra el registro."""
+    espectaculo = get_object_or_404(Espectaculo, slug=slug)
+    if request.method == 'POST':
+        espectaculo.activo = False
+        espectaculo.save(update_fields=['activo', 'actualizado'])
+        messages.success(request, f'«{espectaculo.titulo}» fue dado de baja.')
+        return redirect('portal:gestion_lista')
+    return render(request, 'portal/confirmar_eliminar.html', {'espectaculo': espectaculo})
 
 
 def error_403(request, exception=None):
