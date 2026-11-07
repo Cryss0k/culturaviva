@@ -50,6 +50,8 @@ Datos mínimos de prueba (antes de que exista `poblar_datos`): `python manage.py
 
 Pruebas: `python manage.py test`
 
+Guía detallada, variables de `.env` y solución de problemas: [`docs/ENTORNO.md`](docs/ENTORNO.md)
+
 ## Credenciales de prueba
 _(Completar cuando `poblar_datos` esté implementado)_
 
