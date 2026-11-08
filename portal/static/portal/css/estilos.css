@@ -7,3 +7,17 @@
   box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
   transition: box-shadow .2s ease-in-out;
 }
+
+.cv-sin-imagen {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9ecef;
+  color: #adb5bd;
+  font-size: 3rem;
+}
+.cv-precio {
+  font-size: 1.5rem;
+  font-weight: 700;
+}

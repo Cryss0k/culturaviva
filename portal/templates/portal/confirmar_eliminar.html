@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Dar de baja · CulturaViva{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card border-danger">
+        <div class="card-body">
+          <h1 class="h4">¿Dar de baja este espectáculo?</h1>
+          <p class="mb-1"><strong>{{ espectaculo.codigo }}</strong> · {{ espectaculo.titulo }}</p>
+          <p class="text-muted small">Dejará de verse en el catálogo público. El registro no se borra y se puede reactivar desde «Editar».</p>
+          <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Sí, dar de baja</button>
+            <a href="{% url 'portal:gestion_lista' %}" class="btn btn-outline-secondary">Cancelar</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

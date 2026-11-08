@@ -6,5 +6,23 @@
     <p class="fs-5">Teatro, música, danza y más. Compra tus entradas en línea.</p>
     <a class="btn btn-primary btn-lg" href="{% url 'portal:lista' %}">Ver espectáculos</a>
   </div>
-  <p class="text-muted">Base del proyecto lista. Pablo reemplaza esta portada (tarea P1/P5).</p>
+
+  {% if generos %}
+    <div class="mb-4">
+      {% for g in generos %}
+        <a class="btn btn-outline-secondary btn-sm me-1 mb-1" href="{% url 'portal:lista' %}?genero={{ g.slug }}">
+          {% if g.icono %}<i class="bi {{ g.icono }}"></i> {% endif %}{{ g.nombre }}
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <h2 class="h4 mb-3">Próximas funciones</h2>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for e in proximos %}
+      <div class="col">{% include 'includes/card_espectaculo.html' %}</div>
+    {% empty %}
+      <p class="text-muted">Aún no hay funciones disponibles.</p>
+    {% endfor %}
+  </div>
 {% endblock %}

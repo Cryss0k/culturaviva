@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Espectáculos · CulturaViva{% endblock %}
+{% block content %}
+  <h1 class="h3 mb-3">Espectáculos</h1>
+
+  <form method="get" class="row g-2 mb-4">
+    <div class="col-12 col-md-4">
+      <input type="search" name="q" value="{{ q }}" class="form-control"
+             placeholder="Buscar por título, código o descripción">
+    </div>
+    <div class="col-6 col-md-3">
+      <select name="genero" class="form-select">
+        <option value="">Todos los géneros</option>
+        {% for g in generos %}
+          <option value="{{ g.slug }}" {% if g.slug == genero_actual %}selected{% endif %}>{{ g.nombre }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-6 col-md-3">
+      <select name="orden" class="form-select">
+        {% for valor, etiqueta in ordenes.items %}
+          <option value="{{ valor }}" {% if valor == orden_actual %}selected{% endif %}>{{ etiqueta }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-12 col-md-2 d-grid">
+      <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Filtrar</button>
+    </div>
+  </form>
+
+  <p class="text-muted small">{{ pagina.paginator.count }} resultado{{ pagina.paginator.count|pluralize }}</p>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for e in pagina %}
+      <div class="col">{% include 'includes/card_espectaculo.html' %}</div>
+    {% empty %}
+      <div class="col-12"><div class="alert alert-info">No se encontraron espectáculos con esos filtros.</div></div>
+    {% endfor %}
+  </div>
+
+  {% if pagina.paginator.num_pages > 1 %}
+    <nav class="mt-4" aria-label="Paginación">
+      <ul class="pagination justify-content-center">
+        {% if pagina.has_previous %}
+          <li class="page-item"><a class="page-link" href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ pagina.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+        {% for n in pagina.paginator.page_range %}
+          <li class="page-item {% if n == pagina.number %}active{% endif %}">
+            <a class="page-link" href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ n }}">{{ n }}</a>
+          </li>
+        {% endfor %}
+        {% if pagina.has_next %}
+          <li class="page-item"><a class="page-link" href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ pagina.next_page_number }}">Siguiente</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Mi perfil · CulturaViva{% endblock %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+      <h1 class="h3 mb-3">Mi perfil</h1>
+      <dl class="row">
+        <dt class="col-sm-4">Usuario</dt><dd class="col-sm-8">{{ user.username }}</dd>
+        <dt class="col-sm-4">Correo</dt><dd class="col-sm-8">{{ user.email }}</dd>
+        <dt class="col-sm-4">RUT</dt><dd class="col-sm-8">{{ perfil.rut }}</dd>
+        <dt class="col-sm-4">Rol</dt><dd class="col-sm-8">{{ perfil.get_rol_institucional_display }}</dd>
+      </dl>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% include 'includes/campos_form.html' %}
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
