@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Comprobante {{ comprobante.codigo }} · CulturaViva{% endblock %}
+{% block content %}
+  <div class="card shadow-sm mx-auto" style="max-width: 800px;">
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between flex-wrap">
+        <div>
+          <h1 class="h4 mb-1"><i class="bi bi-receipt"></i> Comprobante de solicitud</h1>
+          <p class="text-muted mb-0">CulturaViva Producciones</p>
+        </div>
+        <div class="text-end">
+          <div class="fw-bold">{{ comprobante.codigo }}</div>
+          <div class="small text-muted">{{ comprobante.fecha }}</div>
+        </div>
+      </div>
+      <hr>
+      <p class="mb-3"><strong>Solicitante:</strong> {{ comprobante.usuario }}</p>
+
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead>
+            <tr><th>Espectáculo</th><th>Función</th><th class="text-center">Cant.</th><th class="text-end">Valor</th><th class="text-end">Subtotal</th></tr>
+          </thead>
+          <tbody>
+            {% for item in comprobante.items %}
+              <tr>
+                <td>{{ item.titulo }}<div class="small text-muted">{{ item.codigo }} · {{ item.sala }}</div></td>
+                <td>{{ item.fecha_funcion }}</td>
+                <td class="text-center">{{ item.cantidad }}</td>
+                <td class="text-end">${{ item.precio_unitario|floatformat:"0g" }}</td>
+                <td class="text-end">${{ item.subtotal|floatformat:"0g" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <dl class="row justify-content-end mb-0">
+        <dt class="col-6 col-md-4 fw-normal text-end">Subtotal</dt><dd class="col-6 col-md-3 text-end">${{ comprobante.subtotal|floatformat:"0g" }}</dd>
+        <dt class="col-6 col-md-4 fw-normal text-end">Cargo por servicio</dt><dd class="col-6 col-md-3 text-end">${{ comprobante.recargo|floatformat:"0g" }}</dd>
+        <dt class="col-6 col-md-4 fw-normal text-end">IVA</dt><dd class="col-6 col-md-3 text-end">${{ comprobante.iva|floatformat:"0g" }}</dd>
+        <dt class="col-6 col-md-4 text-end fs-5">Total</dt><dd class="col-6 col-md-3 text-end fs-5 fw-bold">${{ comprobante.total|floatformat:"0g" }}</dd>
+      </dl>
+
+      <div class="alert alert-info mt-4 mb-0 small">
+        Documento simulado con fines académicos. No constituye una boleta ni un cobro real.
+      </div>
+    </div>
+    <div class="card-footer d-flex gap-2 justify-content-end">
+      <button type="button" class="btn btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir</button>
+      <a class="btn btn-primary" href="{% url 'portal:lista' %}">Seguir explorando</a>
+    </div>
+  </div>
+{% endblock %}

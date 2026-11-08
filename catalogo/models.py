@@ -2,9 +2,11 @@
 
 Propiedad de Cristian. Cambios de campos: avisar por issue y migrar rápido.
 """
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from .managers import EspectaculoQuerySet
 from .validators import validar_codigo
@@ -68,8 +70,22 @@ class Espectaculo(models.Model):
     def __str__(self):
         return f'{self.codigo} - {self.titulo}'
 
+    def clean(self):
+        """Regla de negocio: no se pueden ofrecer más entradas que el aforo de la sala."""
+        super().clean()
+        if (self.entradas_disponibles is not None and self.aforo is not None
+                and self.entradas_disponibles > self.aforo):
+            raise ValidationError({
+                'entradas_disponibles': 'Las entradas disponibles no pueden superar el aforo.',
+            })
+
     def get_absolute_url(self):
         return reverse('portal:detalle', kwargs={'slug': self.slug})
+
+    @property
+    def es_futuro(self):
+        """True si la función aún no se realiza."""
+        return self.fecha_funcion > timezone.now()
 
     @property
     def puede_reservar(self):
